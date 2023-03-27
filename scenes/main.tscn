@@ -4,8 +4,14 @@
 [ext_resource type="Script" path="res://code/ElasticCamera.gd" id="3_dl1py"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g00my"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_top_color = Color(0.282353, 0.333333, 1, 1)
+sky_horizon_color = Color(0.658824, 0.6, 0.917647, 1)
+sky_curve = 0.023898
+ground_bottom_color = Color(0.443137, 0.694118, 0.894118, 1)
+ground_horizon_color = Color(0.658824, 0.588235, 0.968627, 1)
+ground_curve = 0.342967
+sun_angle_max = 6.18
+sun_curve = 0.28978
 
 [sub_resource type="Sky" id="Sky_0uft5"]
 sky_material = SubResource("ProceduralSkyMaterial_g00my")
@@ -14,6 +20,7 @@ sky_material = SubResource("ProceduralSkyMaterial_g00my")
 background_mode = 2
 sky = SubResource("Sky_0uft5")
 tonemap_mode = 2
+ssao_radius = 5.69
 glow_enabled = true
 
 [node name="Node3D" type="Node3D"]
@@ -31,8 +38,9 @@ environment = SubResource("Environment_lxx7f")
 
 [node name="Player" parent="." instance=ExtResource("1_psds0")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -36.7262)
+motion_mode = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
 script = ExtResource("3_dl1py")
 target_path = NodePath("../Player")
-offset = Vector3(0, 0, -15)
+offset = Vector3(0, 0, -20)

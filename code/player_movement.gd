@@ -1,13 +1,13 @@
 extends CharacterBody3D
 
-var min_flight_speed = 0.0
-var max_flight_speed = 300.0
-var turn_speed_up = 0.75
-var turn_speed_forward = 1.0
-var pitch_speed = 0.5
-var level_speed = 3.0
-var throttle_delta = 30.0
-var accel = 50.0
+@export var min_flight_speed = 0.0
+@export var max_flight_speed = 300.0
+@export var turn_speed_up = 0.75
+@export var turn_speed_forward = 1.0
+@export var pitch_speed = 0.5
+@export var level_speed = 3.0
+@export var throttle_delta = 30.0
+@export var accel = 50.0
 
 var forward_speed = 0.0
 var target_speed = 0.0
