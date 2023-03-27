@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b77ldwlffadd"]
+
+[ext_resource type="Shader" path="res://shaders/MonsterSkeleton.gdshader" id="1_g3fvr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ei6e"]
+render_priority = 0
+shader = ExtResource("1_g3fvr")
+shader_parameter/color_start = Vector3(0.4, 0, 0)
+shader_parameter/color_end = Vector3(0.46, 0.42, 0.21)
+shader_parameter/shape_mouse = Vector2(0.251, 0.969)
+
+[sub_resource type="QuadMesh" id="QuadMesh_1urs4"]
+material = SubResource("ShaderMaterial_5ei6e")
+
+[node name="Monster_Skeleton" type="MeshInstance3D"]
+mesh = SubResource("QuadMesh_1urs4")
+skeleton = NodePath("../Julia_Revlute")

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dr0x1wu2n65xn"]
+
+[ext_resource type="Shader" path="res://shaders/JuliaRevoluteSliced.gdshader" id="1_b4mrw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_smshc"]
+render_priority = 0
+shader = ExtResource("1_b4mrw")
+shader_parameter/countSlices = 14.847
+shader_parameter/color = Color(0.92549, 0.721569, 1, 1)
+shader_parameter/shape_mouse = Vector2(0.468359, 0.95317)
+
+[sub_resource type="QuadMesh" id="QuadMesh_gl371"]
+material = SubResource("ShaderMaterial_smshc")
+
+[node name="Julia_Revlute" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.129149)
+mesh = SubResource("QuadMesh_gl371")
+skeleton = NodePath("")
