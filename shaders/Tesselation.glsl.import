@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dqyoxyyhirqbt"
+path="res://.godot/imported/Tesselation.glsl-48407f72f2d22799bc56a88d909fa0dc.res"
+
+[deps]
+
+source_file="res://shaders/Tesselation.glsl"
+dest_files=["res://.godot/imported/Tesselation.glsl-48407f72f2d22799bc56a88d909fa0dc.res"]
+
+[params]
+

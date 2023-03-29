@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dngq8xuy5yv3i"
+path="res://.godot/imported/TesselationControl.glsl-b3609160937acac0d998d937a7216b53.res"
+
+[deps]
+
+source_file="res://shaders/TesselationControl.glsl"
+dest_files=["res://.godot/imported/TesselationControl.glsl-b3609160937acac0d998d937a7216b53.res"]
+
+[params]
+

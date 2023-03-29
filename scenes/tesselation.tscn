@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cydpw7kd36gdp"]
+
+[ext_resource type="Script" path="res://code/Tesselation.gd" id="1_kth0m"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_8s564"]
+radial_segments = 30
+rings = 30
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_8s564")
+script = ExtResource("1_kth0m")
