@@ -15,7 +15,7 @@ layout(location = 2) out vec2 tangent_attrib_tess_control[];
 layout(location = 3) out vec4 color_attrib_tess_control[];
 layout(location = 4) out vec2 uv_attrib_tess_control[];
 
-layout(set = 0, binding = 0, std140) uniform tesscUBO
+layout(set = 0, binding = 1, std140) uniform tesscUBO
 {
     float level;
 } tessc;

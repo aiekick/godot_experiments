@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyhu1535l8rcb"]
+
+[ext_resource type="Shader" path="res://shaders/planet_renderer.gdshader" id="1_iv5d4"]
+[ext_resource type="Texture2D" uid="uid://xu87u7q54nxw" path="res://assets/7MXox.jpg" id="2_xt6oo"]
+[ext_resource type="Texture2D" uid="uid://caa54ltt4dkho" path="res://assets/dG4sE.jpg" id="3_lxffv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8skik"]
+render_priority = 0
+shader = ExtResource("1_iv5d4")
+shader_parameter/u_height_map = ExtResource("3_lxffv")
+shader_parameter/u_color_map = ExtResource("2_xt6oo")
+
+[sub_resource type="QuadMesh" id="QuadMesh_nlaln"]
+material = SubResource("ShaderMaterial_8skik")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_nlaln")

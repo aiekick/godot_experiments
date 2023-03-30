@@ -1,13 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://cydpw7kd36gdp"]
+[gd_scene load_steps=9 format=3 uid="uid://cydpw7kd36gdp"]
 
+[ext_resource type="Shader" path="res://shaders/flat_normal.gdshader" id="1_idfav"]
 [ext_resource type="Script" path="res://code/Tesselation.gd" id="1_kth0m"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ytmkt"]
+render_priority = 0
+shader = ExtResource("1_idfav")
+
 [sub_resource type="SphereMesh" id="SphereMesh_8s564"]
-radial_segments = 30
-rings = 30
+material = SubResource("ShaderMaterial_ytmkt")
+radial_segments = 4
+rings = 4
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_xcpdq"]
+
+[sub_resource type="Sky" id="Sky_gggds"]
+sky_material = SubResource("PhysicalSkyMaterial_xcpdq")
+
+[sub_resource type="Environment" id="Environment_u244u"]
+background_mode = 2
+background_energy_multiplier = 6.23
+sky = SubResource("Sky_gggds")
+ambient_light_source = 3
+ambient_light_color = Color(0.819608, 0.992157, 0.933333, 1)
+reflected_light_source = 2
+tonemap_mode = 2
+ssao_enabled = true
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_ib6cn"]
+exposure_multiplier = 53.513
+auto_exposure_enabled = true
 
 [node name="Node3D" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Surface" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_8s564")
 script = ExtResource("1_kth0m")
+
+[node name="Atmo" type="MeshInstance3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.94119)
+fov = 92.8125
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u244u")
+camera_attributes = SubResource("CameraAttributesPhysical_ib6cn")

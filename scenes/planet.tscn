@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=3 uid="uid://bnxd8h8pwqbqu"]
+
+[ext_resource type="Shader" path="res://shaders/planet.gdshader" id="1_xau60"]
+[ext_resource type="Texture2D" uid="uid://dr6xje4dfw8dd" path="res://assets/ngioK.jpg" id="2_suh78"]
+[ext_resource type="Texture2D" uid="uid://xu87u7q54nxw" path="res://assets/7MXox.jpg" id="3_2mdsq"]
+[ext_resource type="Texture2D" uid="uid://caa54ltt4dkho" path="res://assets/dG4sE.jpg" id="4_8jchc"]
+[ext_resource type="Texture2D" uid="uid://b30qqeu6l6wvp" path="res://assets/3tqI6.jpg" id="5_tr517"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fub1b"]
+render_priority = 0
+shader = ExtResource("1_xau60")
+shader_parameter/u_h_coeff = 5.0
+shader_parameter/u_color_map = ExtResource("3_2mdsq")
+shader_parameter/u_height_map = ExtResource("4_8jchc")
+shader_parameter/u_mask_map = ExtResource("5_tr517")
+shader_parameter/u_cloud_map = ExtResource("2_suh78")
+
+[sub_resource type="SphereMesh" id="SphereMesh_owvj5"]
+lightmap_size_hint = Vector2i(20017, 10009)
+material = SubResource("ShaderMaterial_fub1b")
+radius = 637.1
+height = 1274.2
+radial_segments = 100
+rings = 100
+
+[sub_resource type="SphereMesh" id="SphereMesh_fyjbc"]
+radius = 647.1
+height = 1284.2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Surface" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_owvj5")
+
+[node name="Atmo" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("SphereMesh_fyjbc")
+skeleton = NodePath("../Surface")
