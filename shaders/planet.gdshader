@@ -36,7 +36,7 @@ vec3 toSpherical(vec3 p) {
     float r = length(p);
     return vec3(asin(p.z/r),				// lat
                 atan(p.y, p.x) + PI,		// lon
-                u_h_coeff * (r - 1.0));		// alti (meters data)
+                u_h_coeff * (1.0-r));		// alti (meters data)
 }
 
 vec2 getUV(vec3 p)
@@ -55,7 +55,7 @@ void fragment() {
 	float d = length(ro - v_pos);
 	vec3 p = ro + rd * d;
 	
-	vec2 uv_map = getUV(p);
+	vec2 uv_map = fract(getUV(p));
 	vec3 color = texture(u_color_map, uv_map).rgb;
 	float mask = texture(u_mask_map, uv_map).r;
 	float height = texture(u_height_map, uv_map).r;
@@ -66,19 +66,18 @@ void fragment() {
 		ALBEDO = vec3(0,0,0.15);
 		ROUGHNESS = 0.2;
 		
-		float st = 2.0;
+		float st = 0.2;
 		float sd = 0.0;
 		vec2 uv_it;
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 300; ++i) {
 			p = ro + rd * (d + sd);
 			uv_it = getUV(p);
-			float ct = texture(u_mask_map, uv_it).r;
-			if (ct > 0.01) {
+			vec3 tex_col = texture(u_mask_map, uv_it).rgb;
+			float ct = min(tex_col.r, min(tex_col.g, tex_col.b));
+			if (ct > 0.5) {
 				ALBEDO = texture(u_color_map, uv_it).rgb * (1.0 - sd / 100.0);
 			}
 			sd += st;
-			
-			
 		}
 		
 		//discard;
