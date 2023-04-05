@@ -10,6 +10,7 @@ uniform sampler2D u_color_map;
 uniform sampler2D u_height_map;
 uniform sampler2D u_mask_map;
 uniform sampler2D u_cloud_map;
+uniform sampler2D u_sdf_map;
 
 varying vec3 v_pos;
 varying vec2 v_uv;
