@@ -1,0 +1,92 @@
+
+@startuml
+
+namespace godot {
+    class Vector3
+    class Quaternion
+    class Node3D
+    class Camera
+}
+
+class Event {
+    - event_id : integer
+    - lua_bind : lua_function
+    .. Setters ..
+    # {virtual} setEvent(int) : void
+    # {virtual} setLuaFunction(lua_function) : void
+    .. Getters ..
+    + getEvent() : integer
+    + execLuaFunction() : void
+}
+
+class Transform {
+    - position : Vector3
+    - attitude_quat : Vector4
+    .. Setters ..
+    # {virtual} setPosition(Vector3) : void
+    # {virtual} setAttitudeEuler(Vector3) : void
+    # {virtual} setAttitudeQuat(Quaternion) : void
+    .. Getters ..
+    + getPosition() : Vector3
+    + getAttitudeEuler() : Vector3
+    + getAttitudeQuat() : Quaternion
+}
+
+class BaseNode {
+    - visible : bool
+    .. Setters ..
+    + setVisible(bool) : void
+    .. isers ..
+    + isVisible() : bool
+}
+
+BaseNode --o Event : events
+BaseNode --|> Transform
+BaseNode --|> Node3D
+
+class View {
+    - camerameras : std::vector<Camera>
+    .. Adders ..
+    + addCamera(cam : Camera) : void
+    .. Setters ..
+    + setActiveCamera(name : string) : bool
+    .. Getters ..
+    + getActiveCamera() : Camera
+}
+
+View --|> BaseNode
+View --o Camera
+
+class Avatar {
+    - scene_path : string
+    - root_node : Node3D
+    .. Loaders ..
+    + loadSceneFile(string) : bool
+    .. Adders ..
+    + addChildSceneFile(pos : Vector3, rot : Vector3, string) : bool
+}
+
+Avatar --|> BaseNode
+
+class Layer {
+
+}
+
+note "Layer can contain, sky, milkyway, stellar, clouds, etc.." as note_layer
+Layer .. note_layer
+
+Cloud --|> Layer
+MilkyWay --|> Layer
+Atmo --|> Layer
+sky --|> Layer
+Stellar --|> Layer
+
+class Earth {
+
+}
+
+Earth --|> BaseNode
+Earth --o Layer : layers
+
+@enduml
+
