@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://bambq0p20jjtr"]
+
+[ext_resource type="Shader" path="res://shaders/sub_earth_tunnel.gdshader" id="1_n52es"]
+[ext_resource type="Texture2D" uid="uid://dhn214jv47js2" path="res://assets/tex03.jpg" id="2_bynm2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_76osy"]
+render_priority = 0
+shader = ExtResource("1_n52es")
+shader_parameter/u_bump_map = ExtResource("2_bynm2")
+
+[sub_resource type="QuadMesh" id="QuadMesh_srwye"]
+material = SubResource("ShaderMaterial_76osy")
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = SubResource("QuadMesh_srwye")
