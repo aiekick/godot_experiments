@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnxd8h8pwqbqu"]
+[gd_scene load_steps=14 format=3 uid="uid://bnxd8h8pwqbqu"]
 
 [ext_resource type="Shader" path="res://shaders/planet.gdshader" id="1_xau60"]
 [ext_resource type="Texture2D" uid="uid://dr6xje4dfw8dd" path="res://assets/ngioK.jpg" id="2_suh78"]
@@ -6,6 +6,20 @@
 [ext_resource type="Texture2D" uid="uid://caa54ltt4dkho" path="res://assets/dG4sE.jpg" id="4_8jchc"]
 [ext_resource type="Texture2D" uid="uid://b30qqeu6l6wvp" path="res://assets/3tqI6.jpg" id="5_tr517"]
 [ext_resource type="Texture2D" uid="uid://dclveobvub48t" path="res://assets/water/Land Distance.png" id="6_tfghn"]
+[ext_resource type="Script" path="res://code/CameraTurnTable.gd" id="7_u8gwy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_06r8w"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_ngkog"]
+sky_material = SubResource("ProceduralSkyMaterial_06r8w")
+
+[sub_resource type="Environment" id="Environment_phpqn"]
+background_mode = 2
+sky = SubResource("Sky_ngkog")
+tonemap_mode = 2
+glow_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fub1b"]
 render_priority = 0
@@ -31,6 +45,13 @@ height = 1284.2
 
 [node name="Node3D" type="Node3D"]
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_phpqn")
+
 [node name="Surface" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_owvj5")
 
@@ -38,3 +59,21 @@ mesh = SubResource("SphereMesh_owvj5")
 visible = false
 mesh = SubResource("SphereMesh_fyjbc")
 skeleton = NodePath("../Surface")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+size = Vector2i(1150, 650)
+size_2d_override_stretch = true
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 695)
+script = ExtResource("7_u8gwy")
