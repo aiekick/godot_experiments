@@ -1,6 +1,8 @@
+@tool
 extends Camera3D
 
 # Paramètres de la caméra
+@export var target_path : NodePath
 @export var anchor_point := Vector3.ZERO
 @export var distance := 1300.0
 @export var rotation_speed := 0.01
@@ -15,7 +17,12 @@ var angle_x := 0.0
 var angle_y := 0.0
 var is_mouse_active := false
 var is_mouse_right_active := false
+var target = null
 
+func _ready():
+	if target_path:
+		target = get_node(target_path)
+		
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if is_mouse_active:
@@ -56,14 +63,16 @@ func _input(event: InputEvent) -> void:
 				angle_x -= rotation_speed
 
 func _process(delta: float) -> void:
-	var new_position = anchor_point + distance * Vector3(
-		cos(angle_x) * sin(angle_y),
-		sin(angle_x),
-		cos(angle_x) * cos(angle_y))
-	#position = new_position
-	#look_at(anchor_point, Vector3.UP)
-	
-	var tf = Transform3D().translated(new_position).looking_at(anchor_point, Vector3.UP)
-	global_transform = tf
-	#global_transform = global_transform.interpolate_with(tf, inertia_factor * delta)
+	if target:
+		print("y : %", target.global_transform.origin.y)
+		var new_position = target.global_transform.origin + distance * Vector3(
+			cos(angle_x) * sin(angle_y),
+			sin(angle_x),
+			cos(angle_x) * cos(angle_y))
+		#position = new_position
+		#look_at(anchor_point, Vector3.UP)
+		
+		var tf = Transform3D().translated(new_position).looking_at(target.global_transform.origin, Vector3.UP)
+		global_transform = tf
+		#global_transform = global_transform.interpolate_with(tf, inertia_factor * delta)
 

@@ -1,64 +1,79 @@
-[gd_scene load_steps=14 format=3 uid="uid://bnxd8h8pwqbqu"]
+[gd_scene load_steps=10 format=3 uid="uid://bnxd8h8pwqbqu"]
 
-[ext_resource type="Shader" path="res://shaders/planet.gdshader" id="1_xau60"]
-[ext_resource type="Texture2D" uid="uid://dr6xje4dfw8dd" path="res://assets/ngioK.jpg" id="2_suh78"]
-[ext_resource type="Texture2D" uid="uid://xu87u7q54nxw" path="res://assets/7MXox.jpg" id="3_2mdsq"]
-[ext_resource type="Texture2D" uid="uid://caa54ltt4dkho" path="res://assets/dG4sE.jpg" id="4_8jchc"]
-[ext_resource type="Texture2D" uid="uid://b30qqeu6l6wvp" path="res://assets/3tqI6.jpg" id="5_tr517"]
-[ext_resource type="Texture2D" uid="uid://dclveobvub48t" path="res://assets/water/Land Distance.png" id="6_tfghn"]
+[ext_resource type="Shader" path="res://shaders/sky1.gdshader" id="1_7e6g4"]
 [ext_resource type="Script" path="res://code/CameraTurnTable.gd" id="7_u8gwy"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_06r8w"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_2g2s8"]
 
 [sub_resource type="Sky" id="Sky_ngkog"]
-sky_material = SubResource("ProceduralSkyMaterial_06r8w")
+sky_material = SubResource("PhysicalSkyMaterial_2g2s8")
 
 [sub_resource type="Environment" id="Environment_phpqn"]
 background_mode = 2
 sky = SubResource("Sky_ngkog")
 tonemap_mode = 2
-glow_enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fub1b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i2aeb"]
 render_priority = 0
-shader = ExtResource("1_xau60")
-shader_parameter/u_h_coeff = 5.0
-shader_parameter/u_color_map = ExtResource("3_2mdsq")
-shader_parameter/u_height_map = ExtResource("4_8jchc")
-shader_parameter/u_mask_map = ExtResource("5_tr517")
-shader_parameter/u_cloud_map = ExtResource("2_suh78")
-shader_parameter/u_sdf_map = ExtResource("6_tfghn")
+shader = ExtResource("1_7e6g4")
 
-[sub_resource type="SphereMesh" id="SphereMesh_owvj5"]
-lightmap_size_hint = Vector2i(20017, 10009)
-material = SubResource("ShaderMaterial_fub1b")
-radius = 637.1
-height = 1274.2
-radial_segments = 100
-rings = 100
+[sub_resource type="QuadMesh" id="QuadMesh_wn13w"]
+lightmap_size_hint = Vector2i(1, 1)
+material = SubResource("ShaderMaterial_i2aeb")
+size = Vector2(10000, 10000)
 
-[sub_resource type="SphereMesh" id="SphereMesh_fyjbc"]
-radius = 647.1
-height = 1284.2
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xe4i2"]
+
+[sub_resource type="GDScript" id="GDScript_b06my"]
+script/source = "@tool
+extends MeshInstance3D
+
+var time := 0.0
+@export var radius := 5.0
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+func _physics_process(delta):
+	time += delta
+	
+	var c = cos(time) * radius
+	var s = sin(time) * radius
+	
+	set_position(Vector3(0,time,0))
+	set_rotation(Vector3(0,0,time))
+
+	#print(\"c : %\", c)
+	#print(\"s : %\", s)
+"
 
 [node name="Node3D" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
+shadow_bias = 1.788
+shadow_opacity = 0.53
+shadow_blur = 3.338
+directional_shadow_split_1 = 0.369
+directional_shadow_split_2 = 0.256
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_phpqn")
 
-[node name="Surface" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_owvj5")
+[node name="Quad" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("QuadMesh_wn13w")
+skeleton = NodePath("../MeshInstance3D")
 
-[node name="Atmo" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("SphereMesh_fyjbc")
-skeleton = NodePath("../Surface")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xe4i2")
+script = SubResource("GDScript_b06my")
+radius = 20.0
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 clip_contents = true
@@ -71,9 +86,25 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
 size = Vector2i(1150, 650)
 size_2d_override_stretch = true
+render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 695)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
 script = ExtResource("7_u8gwy")
+target_path = NodePath("../../../MeshInstance3D")
+distance = 10.0
+min_distance = 2
+
+[node name="Control" type="Control" parent="SubViewportContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SubViewportContainer/Control"]
+layout_mode = 0
+offset_left = 121.0
+offset_top = 94.0
+offset_right = 262.0
+offset_bottom = 199.0
+text = "PX : 12.456"
