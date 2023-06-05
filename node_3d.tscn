@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7g7gxj51bw3p"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_7n6vn"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_7n6vn")

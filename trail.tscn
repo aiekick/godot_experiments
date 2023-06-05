@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhwkydx00tkht"]
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_a3q7v"]
+
+[sub_resource type="GDScript" id="GDScript_oxnem"]
+script/source = "extends MeshInstance3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	for t in range(6.28318):
+		x = cos(t) * 5.0
+		y = t * 0.5
+		z = sin(t) * 5.0
+		
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
+[sub_resource type="Curve3D" id="Curve3D_46nt2"]
+bake_interval = 63.41
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, -3, 0, 0, 0, 0, 0, 0, 0, 10, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("TubeTrailMesh_a3q7v")
+script = SubResource("GDScript_oxnem")
+
+[node name="Path3D" type="Path3D" parent="MeshInstance3D"]
+curve = SubResource("Curve3D_46nt2")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="MeshInstance3D"]

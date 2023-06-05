@@ -161,6 +161,8 @@ void fragment() {
 	vec3 ro = (inv_model_matrix * vec4(world_coords,1)).xyz;
 	vec3 rd = (inv_model_matrix * vec4(normalize(world_coords - world_cam_pos),0)).xyz;
 	vec3 color = vec3(0);
+	
+	ro.y += MODEL_MATRIX[3].y;
 
 	vec3 vc = vec3(0); // voxel center
 	float ds = getDist(ro, rd, voxelSize, vc);

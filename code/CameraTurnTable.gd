@@ -64,7 +64,7 @@ func _input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	if target:
-		print("y : %", target.global_transform.origin.y)
+		#print("y : %", target.global_transform.origin.y)
 		var new_position = target.global_transform.origin + distance * Vector3(
 			cos(angle_x) * sin(angle_y),
 			sin(angle_x),

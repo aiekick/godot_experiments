@@ -1,0 +1,68 @@
+[gd_scene load_steps=6 format=3 uid="uid://chcfr6c2bcpbi"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_bp2di"]
+
+[sub_resource type="GDScript" id="GDScript_t7kcc"]
+script/source = "extends MeshInstance3D
+
+var mat: StandardMaterial3D = StandardMaterial3D.new()
+
+func draw_line(begin_pos: Vector3, end_pos: Vector3, color: Color = Color.RED) -> void:
+	mesh.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
+	mesh.surface_set_color(color)
+	mesh.surface_add_vertex(begin_pos)
+	mesh.surface_add_vertex(end_pos)
+	mesh.surface_end()
+
+func draw_sphere(center: Vector3, radius: float = 1.0, color: Color = Color.RED) -> void:
+	var step: int = 48
+	var sppi: float = 2 * PI / step
+	var axes = [
+		[Vector3.UP, Vector3.RIGHT],
+		[Vector3.RIGHT, Vector3.FORWARD],
+		[Vector3.FORWARD, Vector3.UP]
+	]
+	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	mesh.surface_set_color(color)
+	for axis in axes:
+		for i in range(step + 1):
+			mesh.surface_add_vertex(center + (axis[0] * radius)
+				.rotated(axis[1], sppi * (i % step)))
+	mesh.surface_end()
+
+func _ready():
+	mesh = ImmediateMesh.new()
+	mat.no_depth_test = true
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.vertex_color_use_as_albedo = true
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	set_material_override(mat)
+	draw_sphere(Vector3(0,0,0))
+"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nk7hb"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_kk5ea"]
+sky_material = SubResource("ProceduralSkyMaterial_nk7hb")
+
+[sub_resource type="Environment" id="Environment_rg7og"]
+background_mode = 2
+sky = SubResource("Sky_kk5ea")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = SubResource("ImmediateMesh_bp2di")
+script = SubResource("GDScript_t7kcc")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rg7og")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)

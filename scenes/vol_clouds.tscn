@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://dce3vyrmjvm36"]
+
+[ext_resource type="Shader" path="res://shaders/clouds.gdshader" id="1_vb7yx"]
+[ext_resource type="CompressedTexture3D" uid="uid://djlhi4jo363c2" path="res://assets/perlworlnoise.tga" id="2_8klu6"]
+[ext_resource type="Texture2D" uid="uid://dlgi7p0dgs522" path="res://assets/weather.bmp" id="2_b5ig1"]
+[ext_resource type="CompressedTexture3D" uid="uid://cichlawvcm553" path="res://assets/worlnoise.bmp" id="4_2sllt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rakpw"]
+shader = ExtResource("1_vb7yx")
+shader_parameter/_density = 0.045
+shader_parameter/cloud_coverage = 0.25
+shader_parameter/_time_scale = 1.075
+shader_parameter/_time_offset = 26.0
+shader_parameter/rayleigh = 2.0
+shader_parameter/rayleigh_color = Color(0.26, 0.41, 0.58, 1)
+shader_parameter/mie = 0.005
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/mie_color = Color(0.63, 0.77, 0.92, 1)
+shader_parameter/turbidity = 10.0
+shader_parameter/sun_disk_scale = 1.0
+shader_parameter/ground_color = Color(0.545098, 0.901961, 0.945098, 1)
+shader_parameter/exposure = 0.1
+shader_parameter/worlnoise = ExtResource("4_2sllt")
+shader_parameter/perlworlnoise = ExtResource("2_8klu6")
+shader_parameter/weathermap = ExtResource("2_b5ig1")
+
+[sub_resource type="Sky" id="Sky_us1rr"]
+sky_material = SubResource("ShaderMaterial_rakpw")
+
+[sub_resource type="Environment" id="Environment_2sqol"]
+background_mode = 2
+sky = SubResource("Sky_us1rr")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2sqol")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.547665, -0.715776, 0.433276, -0.750001, 0.649518, 0.125001, -0.370893, -0.256499, -0.892551, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Mer" type="MeshInstance3D" parent="."]

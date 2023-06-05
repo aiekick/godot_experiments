@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnxd8h8pwqbqu"]
+[gd_scene load_steps=11 format=3 uid="uid://bnxd8h8pwqbqu"]
 
-[ext_resource type="Shader" path="res://shaders/sky1.gdshader" id="1_7e6g4"]
+[ext_resource type="Shader" path="res://shaders/fractal_exp_18.gdshader" id="1_xepxl"]
 [ext_resource type="Script" path="res://code/CameraTurnTable.gd" id="7_u8gwy"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_2g2s8"]
@@ -15,12 +15,28 @@ tonemap_mode = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2aeb"]
 render_priority = 0
-shader = ExtResource("1_7e6g4")
+shader = ExtResource("1_xepxl")
 
 [sub_resource type="QuadMesh" id="QuadMesh_wn13w"]
 lightmap_size_hint = Vector2i(1, 1)
 material = SubResource("ShaderMaterial_i2aeb")
-size = Vector2(10000, 10000)
+
+[sub_resource type="GDScript" id="GDScript_v2nf7"]
+script/source = "@tool
+extends MeshInstance3D
+
+@export var target_path : NodePath
+
+var target = null
+
+func _ready():
+	if target_path:
+		target = get_node(target_path)
+
+func _process(delta):
+	global_transform.origin = target.global_transform.origin
+	
+"
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xe4i2"]
 
@@ -65,12 +81,16 @@ directional_shadow_split_2 = 0.256
 environment = SubResource("Environment_phpqn")
 
 [node name="Quad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31667, 0)
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("QuadMesh_wn13w")
-skeleton = NodePath("../MeshInstance3D")
+skeleton = NodePath("../Mobile")
+script = SubResource("GDScript_v2nf7")
+target_path = NodePath("../Mobile")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Mobile" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.251403, -0.967882, 0, 0.967882, 0.251403, 0, 0, 0, 1, 0, 1.31667, 0)
 mesh = SubResource("CapsuleMesh_xe4i2")
 script = SubResource("GDScript_b06my")
 radius = 20.0
@@ -92,9 +112,9 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31667, 10)
 script = ExtResource("7_u8gwy")
-target_path = NodePath("../../../MeshInstance3D")
+target_path = NodePath("../../../Mobile")
 distance = 10.0
 min_distance = 2
 
